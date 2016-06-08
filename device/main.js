@@ -2,18 +2,23 @@
  * Created by appstacksoultions.com on 6/7/16.
  */
 var mqtt    = require('mqtt');
-var client  = mqtt.connect('mqtt://localhost:2983',{clientId:'edison',username:'guest',password:'guest1'});
+var client  = mqtt.connect('mqtt://localhost:2983',{clientId:'edison',username:'edison',password:'xxx'});
 
 client.on('error', function(err) {
     console.log("Error in connection ", err.message);
 });
 client.on('connect', function () {
-    client.subscribe('topic/lamp');
-    client.publish('topic/lamp', 'on');
+    client.subscribe('topic/lamp/action');
+
 });
 
 client.on('message', function (topic, message) {
-    // message is Buffer
-    console.log("Message received",message.toString());
-    client.end();
+
+    switch(topic){
+        case "topic/lamp/action":
+            var action = message.toString();
+            //call MOCHAD to send signal to CM19A module, send the status back to topic
+            client.publish('topic/lamp/status', 'on');
+            break;
+    }
 });

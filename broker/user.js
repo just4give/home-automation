@@ -10,7 +10,8 @@ var userSchema = new Schema({
 
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    clinetId: { type: String, required: true }
+    salt: { type: String, required: true },
+    clientId: { type: String, required: true }
 });
 
 // the schema is useless so far

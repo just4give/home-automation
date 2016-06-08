@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crypto": "0.0.3",
     "mongoose": "^4.4.20",
     "mosca": "^1.4.0"
   }

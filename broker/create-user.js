@@ -1,7 +1,12 @@
 /**
  * Created by appstacksoultions.com on 6/7/16.
  */
-console.log(process.argv);
+
+var User = require('./user');
+var Crypto = require('./crypto');
+
+
+//console.log(process.argv);
 
 var username = process.argv[2];
 var password = process.argv[3];
@@ -12,4 +17,25 @@ if(clientId !== 'edison' && clientId !== 'mobile'){
     process.exit(1);
 }
 
-console.log("Creating new user");
+var salt, hash;
+salt = Crypto.createSalt();
+hash = Crypto.hashPwd(salt, password);
+console.log("hashed password:", hash);
+
+var user = new User({
+    username: username,
+    password: hash,
+    salt :salt,
+    clientId: clientId
+});
+
+user.save(function(err){
+    if (err) {
+        console.log(err.message);
+    }
+
+    console.log('User created successfully!');
+    process.exit(0);
+})
+
+
