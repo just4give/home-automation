@@ -1,6 +1,17 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope, $cordovaToast,MQTTSocket) {
+  console.log($cordovaToast);
+
+  $scope.commandLight = function(){
+
+    $cordovaToast.showShortTop('Here is a message').then(function(success) {
+      // success
+    }, function (error) {
+      // error
+    });
+  }
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "crypto": "0.0.3",
+    "memdown": "^1.2.0",
     "mongoose": "^4.4.20",
     "mosca": "^1.4.0"
   }

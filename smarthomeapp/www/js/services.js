@@ -47,4 +47,23 @@ angular.module('starter.services', [])
       return null;
     }
   };
+})
+
+.factory('MQTTSocket',function(){
+
+  var client  = mqtt.connect('mqtt://52.25.206.147:2984',{clientId:'mobile',username:'mobile',password:'xxx'});
+
+  client.on('error', function(err) {
+    console.log("Error in connection ", err.message);
+  });
+  client.on('connect', function () {
+    console.log('connected to MQTT broker');
+    client.subscribe('topic/lamp/action');
+
+  });
+
+  return{
+
+  }
+
 });
