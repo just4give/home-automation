@@ -17,10 +17,10 @@ var mqttbackend = {
 };
 
 var moscaSettings = {
-    port: 2983,
+    port: 1983,
     backend: mqttbackend,
     http: {
-        port: 2984,
+        port: 1984,
         bundle: true,
         static: './'
     },
@@ -37,7 +37,7 @@ var authenticate = function(client, username, password, callback) {
 
     User.findOne({ username: username , clientId: client.id}, function(err, user) {
 
-        if (err){
+        if (err || !user ){
             callback(null, false);
             return;
         } else{

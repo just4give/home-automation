@@ -1,15 +1,58 @@
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope, $cordovaToast,MQTTSocket) {
-  console.log($cordovaToast);
+  $scope.connectionError = false;
 
+  $scope.labels = ["", "", "", "", "", "", "","", "", "", "", "", "", ""];
+  $scope.series = ['Temperature'];
+  $scope.data = [
+    [65, 59, 70, 71, 56, 55, 60,65, 59, 70, 71, 56, 55, 60]
+  ];
+
+  $scope.settings = {
+    livingRoomLight: true
+  };
   $scope.commandLight = function(){
 
-    $cordovaToast.showShortTop('Here is a message').then(function(success) {
+   /* $cordovaToast.showShortTop('Here is a message').then(function(success) {
       // success
     }, function (error) {
       // error
-    });
+    });*/
+    var command="";
+    if( $scope.settings.livingRoomLight){
+      command ="on";
+    }else{
+      command="off";
+    }
+    MQTTSocket.publish('topic/lamp/action',command);
+  }
+
+  $scope.login = function(){
+
+      MQTTSocket.connect('xxx','xxx',function(err,connected){
+
+          if(err ){
+            if( !$scope.connectionError){
+              console.log("Login failed");
+
+              $scope.$apply(function(){
+                $scope.connectionError = true;
+              });
+
+            }
+
+
+          }else {
+            console.log("**connnected");
+            $scope.$apply(function(){
+              $scope.connected = true;
+              $scope.connectionError = false;
+            });
+
+          }
+
+      });
   }
 })
 

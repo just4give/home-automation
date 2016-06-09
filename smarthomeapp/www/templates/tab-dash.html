@@ -1,9 +1,20 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
+    <button class="button button-energized button-block" ng-click="login()" ng-hide="connected">
+      Login
+    </button>
+
+    <ion-label ng-show="connectionError">Connection Failed</ion-label>
     <ion-list>
-      <ion-toggle  ng-model="settings.enableFriends" ng-change="commandLight()">
+      <ion-toggle  ng-model="settings.livingRoomLight" ng-change="commandLight()">
         Living Room Light
       </ion-toggle>
     </ion-list>
+
+    <canvas id="line" class="chart chart-line" chart-data="data"
+            chart-labels="labels" chart-legend="true" chart-series="series"
+            chart-click="onClick" >
+    </canvas>
+
   </ion-content>
 </ion-view>

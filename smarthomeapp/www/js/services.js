@@ -51,19 +51,45 @@ angular.module('starter.services', [])
 
 .factory('MQTTSocket',function(){
 
-  var client  = mqtt.connect('mqtt://52.25.206.147:2984',{clientId:'mobile',username:'mobile',password:'xxx'});
+  var service={};
+  var client={};
 
-  client.on('error', function(err) {
-    console.log("Error in connection ", err.message);
-  });
-  client.on('connect', function () {
-    console.log('connected to MQTT broker');
-    client.subscribe('topic/lamp/action');
+  service.connect = function(username,password,cb){
+      client  = mqtt.connect('mqtt://',{clientId:'mobile',username:username,password:password});
 
-  });
+      client.on('error', function(err) {
+        console.log("Error in connection ", err.message);
+        cb(err);
+      });
+      client.on('connect', function () {
+        console.log('connected to MQTT broker');
+        client.subscribe('topic/lamp/action');
+        client.subscribe('topic/lamp/status');
+        cb(null,true);
 
-  return{
+      });
+      client.on('message', function (topic, message) {
+        switch (topic){
+          case 'topic/lamp/action':
+                console.log("message received by mobile on topic/lamp/action", message.toString());
+                break;
+          case 'topic/lamp/status':
+                console.log("message received by mobile on topic/lamp/status", message.toString());
+                break;
+
+        }
+
+      });
+  }
+
+  service.publish = function(topic, payload) {
+    client.publish(topic,payload, {retain: true});
 
   }
+
+
+
+
+  return service;
 
 });
