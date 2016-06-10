@@ -49,20 +49,24 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('MQTTSocket',function($rootScope){
+.factory('MQTTSocket',function($rootScope,localStorageService){
 
   var service={};
   var client={};
 
   service.connect = function(username,password,cb){
+      console.log("connecting to mqtt", username, password);
       client  = mqtt.connect('mqtt://52.25.206.147:2984',{clientId:'mobile',username:username,password:password});
-
+      console.log("client", client);
       client.on('error', function(err) {
         console.log("Error in connection ", err.message);
         cb(err);
       });
       client.on('connect', function () {
         console.log('connected to MQTT broker');
+        localStorageService.set('connected',true);
+        localStorageService.set('username',username);
+        localStorageService.set('password',password);
         client.subscribe('topic/lamp/action');
         client.subscribe('topic/lamp/status');
         client.subscribe('topic/sensor/temp');
@@ -84,12 +88,12 @@ angular.module('starter.services', [])
                   if($rootScope.labels.length >10){
                     $rootScope.labels.shift();
                     $rootScope.labels.push("");
-                    $rootScope.data.shift();
-                    $rootScope.data.push(message.toString());
+                    $rootScope.data[0].shift();
+                    $rootScope.data[0].push(message.toString());
 
                   }else{
                     $rootScope.labels.push("");
-                    $rootScope.data.push(message.toString());
+                    $rootScope.data[0].push(message.toString());
                   }
                   $rootScope.temperature= Math.round(Number(message.toString()));
                 })
@@ -111,4 +115,7 @@ angular.module('starter.services', [])
 
   return service;
 
-});
+})
+  .factory('AuthService',function(){
+
+  });

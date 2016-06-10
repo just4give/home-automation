@@ -1,8 +1,5 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
-    <button class="button button-energized button-block" ng-click="login()" ng-hide="connected">
-      Login
-    </button>
 
     <ion-label ng-show="connectionError">Connection Failed</ion-label>
     <ion-list>
@@ -15,8 +12,12 @@
             chart-labels="labels" chart-legend="true" chart-series="series"
             chart-click="onClick" >
     </canvas>
-    <div>
-      {{temperature}}
+
+    <div class="progress-wrapper">
+    <div round-progress max="100"  current="temperature"  color="{{tempColor}}"  bgcolor="rgba(197, 190, 190, 0.4)"  stroke="10" responsive="true" offset="40" show-current="true"></div>
+    <div class="text" ng-style="{'color':tempColor}" ng-bind="temperature">50</div>
+    </div>
+
     </div>
   </ion-content>
 </ion-view>

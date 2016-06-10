@@ -1,0 +1,26 @@
+<ion-view view-title="Sign-In" hide-nav-bar="true">
+
+  <ion-content>
+
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">Username</span>
+        <input type="text" ng-model="user.username">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Password</span>
+        <input type="password" ng-model="user.password">
+      </label>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-balanced" ng-click="signIn(user)">
+        Sign-In
+      </button>
+
+    </div>
+    <div ng-show="error" class="padding bar bar-assertive">
+      <h1 class="title" ng-bind="error"></h1>
+    </div>
+  </ion-content>
+
+</ion-view>

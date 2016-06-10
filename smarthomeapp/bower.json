@@ -6,6 +6,8 @@
     "ngCordova": "^0.1.26-alpha"
   },
   "dependencies": {
-    "angular-chart.js": "~0.10.2"
+    "angular-chart.js": "~0.10.2",
+    "angular-svg-round-progressbar": "~0.4.4",
+    "angular-local-storage": "~0.2.7"
   }
 }
