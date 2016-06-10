@@ -1,29 +1,63 @@
 /**
  * Created by appstacksoultions.com on 6/7/16.
  */
-var mqtt    = require('mqtt');
-var client  = mqtt.connect('mqtt://localhost:1983',{clientId:'edison',username:'edison',password:'password'});
 
-client.on('error', function(err) {
-    console.log("Error in connection ", err.message);
+"use strict";
+
+var cylon = require("cylon");
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var net = require('net');
+var mochad = net.createConnection(1099);
+var mochadConnected = false;
+
+mochad.on('connect', function() {
+    console.log('Connected to Mochad');
+    mochadConnected = true;
 });
-client.on('connect', function () {
-    client.subscribe('topic/lamp/action');
-    var status = true;
-    setInterval(function(){
-        status= !status;
-        client.publish('topic/lamp/status', status?'on':'off');
-    },1000);
 
+mochad.on('error', function() {
+    console.log('Mochad connect error!');
+    mochadConnected = false;
 });
 
-client.on('message', function (topic, message) {
+cylon.robot({
+    name: "doorbot",
+    connections: {
+        edison: { adaptor: "intel-iot" },
+        server: { adaptor: 'mqtt', host: 'mqtt://52.25.206.147:2983', clientId:'edison',username:'xxx',password:'xxx' }
+    },
+    devices: {
+        led: { driver: "led", pin: 13, connection: "edison" },
+        temp: {driver: "temperature-sensor", pin: 0}
+    },
+    work: function() {
 
-    switch(topic){
-        case "topic/lamp/action":
-            var action = message.toString();
-            //call MOCHAD to send signal to CM19A module, send the status back to topic
-            client.publish('topic/lamp/status', 'on');
-            break;
+        var that = this;
+        var fahrenheit;
+        
+        every((3).second(), function() {
+            
+            fahrenheit = that.temp.celsius() * 9.0/5.0 + 32.0;
+            console.log(fahrenheit);
+            that.server.publish('topic/sensor/temp', fahrenheit.toString());
+            that.led.toggle();    
+        });
+        
+        that.server.subscribe('topic/lamp/action');
+        that.server.on('message', function (topic, message) {
+          switch(topic){
+              case 'topic/lamp/action':
+                  mochad.write('rf a1 ' + message.toString()+' \n');
+                  break;
+          }
+        });
+
     }
-});
+}).start();
+
+
+
+
+

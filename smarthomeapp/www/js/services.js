@@ -49,13 +49,13 @@ angular.module('starter.services', [])
   };
 })
 
-.factory('MQTTSocket',function(){
+.factory('MQTTSocket',function($rootScope){
 
   var service={};
   var client={};
 
   service.connect = function(username,password,cb){
-      client  = mqtt.connect('mqtt://',{clientId:'mobile',username:username,password:password});
+      client  = mqtt.connect('mqtt://52.25.206.147:2984',{clientId:'mobile',username:username,password:password});
 
       client.on('error', function(err) {
         console.log("Error in connection ", err.message);
@@ -65,16 +65,35 @@ angular.module('starter.services', [])
         console.log('connected to MQTT broker');
         client.subscribe('topic/lamp/action');
         client.subscribe('topic/lamp/status');
+        client.subscribe('topic/sensor/temp');
         cb(null,true);
 
       });
       client.on('message', function (topic, message) {
         switch (topic){
           case 'topic/lamp/action':
-                console.log("message received by mobile on topic/lamp/action", message.toString());
+
                 break;
           case 'topic/lamp/status':
-                console.log("message received by mobile on topic/lamp/status", message.toString());
+
+                break;
+          case 'topic/sensor/temp':
+                console.log("temp",message.toString());
+                $rootScope.$apply(function(){
+
+                  if($rootScope.labels.length >10){
+                    $rootScope.labels.shift();
+                    $rootScope.labels.push("");
+                    $rootScope.data.shift();
+                    $rootScope.data.push(message.toString());
+
+                  }else{
+                    $rootScope.labels.push("");
+                    $rootScope.data.push(message.toString());
+                  }
+                  $rootScope.temperature= Math.round(Number(message.toString()));
+                })
+
                 break;
 
         }
@@ -83,7 +102,7 @@ angular.module('starter.services', [])
   }
 
   service.publish = function(topic, payload) {
-    client.publish(topic,payload, {retain: true});
+    client.publish(topic,payload);
 
   }
 

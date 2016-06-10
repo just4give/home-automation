@@ -1,12 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $cordovaToast,MQTTSocket) {
-  $scope.connectionError = false;
+.controller('DashCtrl', function($scope,$rootScope, $cordovaToast,MQTTSocket) {
+  $rootScope.connectionError = false;
 
-  $scope.labels = ["", "", "", "", "", "", "","", "", "", "", "", "", ""];
-  $scope.series = ['Temperature'];
-  $scope.data = [
-    [65, 59, 70, 71, 56, 55, 60,65, 59, 70, 71, 56, 55, 60]
+  $rootScope.labels = [];
+  $rootScope.series = ['Temperature'];
+  $rootScope.data = [
+    []
   ];
 
   $scope.settings = {
