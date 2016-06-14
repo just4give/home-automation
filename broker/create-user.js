@@ -12,10 +12,10 @@ var username = process.argv[2];
 var password = process.argv[3];
 var clientId = process.argv[4];
 
-if(clientId !== 'edison' && clientId !== 'mobile'){
+/*if(clientId !== 'edison' && clientId !== 'mobile'){
     console.log("Client ID not allowed");
     process.exit(1);
-}
+}*/
 
 var salt, hash;
 salt = Crypto.createSalt();

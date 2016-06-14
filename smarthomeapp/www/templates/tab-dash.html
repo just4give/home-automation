@@ -1,20 +1,38 @@
 <ion-view view-title="Dashboard">
-  <ion-content class="padding">
+  <ion-content>
 
     <ion-label ng-show="connectionError">Connection Failed</ion-label>
     <ion-list>
-      <ion-toggle  ng-model="settings.livingRoomLight" ng-change="commandLight()">
-        Living Room Light
-      </ion-toggle>
-    </ion-list>
 
-    <canvas id="line" class="chart chart-line" chart-data="data"
+      <div class="item item-toggle item-icon-left" >
+        <i class="icon ion-ios-lightbulb"></i>
+        Living Room Light
+        <label class="toggle">
+          <input type="checkbox" ng-model="settings.livingRoomLight" ng-change="commandLight()">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </div>
+    </ion-list>
+    <div class="padding">
+    <canvas id="line" class="chart chart-line" chart-data="data" style="text-align: center;width: 100%"
             chart-labels="labels" chart-legend="true" chart-series="series"
             chart-click="onClick" >
     </canvas>
-
+    </div>
     <div class="progress-wrapper">
-    <div round-progress max="100"  current="temperature"  color="{{tempColor}}"  bgcolor="rgba(197, 190, 190, 0.4)"  stroke="10" responsive="true" offset="40" show-current="true"></div>
+    <div round-progress max="100"  current="temperature"  color="url(#yourGradientIdHere)"
+         bgcolor="rgba(197, 190, 190, 0.4)"  stroke="5" responsive="true" offset="60" show-current="true"
+    style="margin-top: -80px;">
+      <svg>
+        <linearGradient id="yourGradientIdHere" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="30%"  stop-color="#18A5BF"/>
+          <stop offset="55%" stop-color="orange"/>
+          <stop offset="95%" stop-color="red"/>
+        </linearGradient>
+      </svg>
+    </div>
     <div class="text" ng-style="{'color':tempColor}" ng-bind="temperature">50</div>
     </div>
 

@@ -15,14 +15,14 @@
         "name": "SmartHome.xdk"
       },
       "SmartHome.xdke": {
-        "previousModTime": 1465527678000,
-        "modified": 1465527678000,
+        "previousModTime": 1465775646000,
+        "modified": 1465775646000,
         "seen": true,
         "name": "SmartHome.xdke"
       },
       "main.js": {
-        "previousModTime": 1465528153000,
-        "modified": 1465528153000,
+        "previousModTime": 1465775726000,
+        "modified": 1465775726000,
         "seen": true,
         "name": "main.js"
       },
@@ -47,7 +47,7 @@
     },
     "boardFileStatus": {
       "main.js": {
-        "previousModTime": 1465528177614
+        "previousModTime": 1465775737762
       }
     }
   }

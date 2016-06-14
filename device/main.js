@@ -26,7 +26,7 @@ cylon.robot({
     name: "doorbot",
     connections: {
         edison: { adaptor: "intel-iot" },
-        server: { adaptor: 'mqtt', host: 'mqtt://52.25.206.147:2983', clientId:'edison',username:'xxx',password:'xxx' }
+        server: { adaptor: 'mqtt', host: 'mqtt://52.25.206.147:2983', clientId:'edison',username:'xxxx',password:'xxxx' }
     },
     devices: {
         led: { driver: "led", pin: 13, connection: "edison" },
@@ -36,11 +36,12 @@ cylon.robot({
 
         var that = this;
         var fahrenheit;
+        var a1lamp = false;
         
         every((3).second(), function() {
             
             fahrenheit = that.temp.celsius() * 9.0/5.0 + 32.0;
-            console.log(fahrenheit);
+            //console.log(fahrenheit);
             that.server.publish('topic/sensor/temp', fahrenheit.toString());
             that.led.toggle();    
         });
@@ -50,6 +51,7 @@ cylon.robot({
           switch(topic){
               case 'topic/lamp/action':
                   mochad.write('rf a1 ' + message.toString()+' \n');
+                  that.server.publish('topic/lamp/a1/status', message.toString(),{retain:true});
                   break;
           }
         });
